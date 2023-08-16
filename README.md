@@ -10,7 +10,7 @@ GWAS: `PLINK`, Meta-Analyses: `GWAMA`, SNP-Heritability: `GCTA`, Gene-Set Analys
 Genetic, biomarker, neuropathology, and cognitive data from this study was obtained from the following cohorts:
 Anti-Amyloid Treatment in Asymptomatic Alzheimer (A4), Alzheimer's Disease Neuroimaging Initiative (ADNI), Adult Changes in Thought (ACT), and Religious Orders Study/Memory and Aging Project (ROS/MAP). 
 
-For cognitive resilience phenotype model creation and validation, please see [Dumitrescu et al., 2020](https://doi.org/10.1093/brain/awaa209) and [Hohman et al., 2016](https://doi.org/10.1212/WNL.0000000000003397).
+For cognitive resilience phenotype model creation and validation, please see these two papers from our group: [Dumitrescu et al., 2020](https://doi.org/10.1093/brain/awaa209) and [Hohman et al., 2016](https://doi.org/10.1212/WNL.0000000000003397).
 
 ### Citation
 Please cite the following papers:
