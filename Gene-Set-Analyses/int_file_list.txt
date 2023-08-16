@@ -1,0 +1,4 @@
+COGRES.interaction_2sets
+COGRES_NC.interaction_2sets
+GLOBALRES.interaction_2sets
+GLOBALRES_NC.interaction_2sets
