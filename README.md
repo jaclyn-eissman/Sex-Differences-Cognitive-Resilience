@@ -7,7 +7,7 @@ Approximately 30% of elderly adults are cognitively unimpaired at time of death 
 `PLINK`, `GWAMA`, `GCTA`, `MAGMA`, `GNOVA` (also see [here](https://github.com/qlu-lab/GNOVA-2.0))
 
 ### Acknowledgement
-For cognitive resilience phenotype model creation and validation, please see Dumitrescu et al., 2020 and Hohman et al., 2016 below.
+For cognitive resilience phenotype model creation and validation, please see [Dumitrescu et al., 2020](https://doi.org/10.1093/brain/awaa209) and [Hohman et al., 2016](https://doi.org/10.1212/WNL.0000000000003397).
 
 ### Citation
 Please cite the following papers:
