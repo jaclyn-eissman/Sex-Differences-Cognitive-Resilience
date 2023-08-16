@@ -1,0 +1,8 @@
+COGRES.males_2sets
+COGRES_NC.males_2sets
+GLOBALRES.males_2sets
+GLOBALRES_NC.males_2sets
+COGRES.females_2sets
+COGRES_NC.females_2sets
+GLOBALRES.females_2sets
+GLOBALRES_NC.females_2sets
