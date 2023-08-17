@@ -1,4 +1,5 @@
 #!/bin/bash
+#By Jaclyn Eissman, December 7, 2021
 #SBATCH --mail-user=jaclyn.m.eissman@vanderbilt.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
@@ -9,4 +10,5 @@
 #SBATCH --job-name=Run_GCTA_ALL
 #SBATCH --output=/data/h_vmac/eissmajm/Sex_Diff_Final/GCTA/Run_GCTA_REML_ALL.out
 
+#Run bash script
 sh /data/h_vmac/eissmajm/Sex_Diff_Final/GCTA/run_gcta_reml_all.sh
