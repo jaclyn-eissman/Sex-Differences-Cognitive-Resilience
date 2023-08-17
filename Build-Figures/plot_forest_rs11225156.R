@@ -1,37 +1,39 @@
-#packages
+#By Jaclyn Eissman, December 7, 2021
+
+#Load packages
 library(data.table)
 library(metafor)
 library(forestplot)
 
-#directory
+#Set directory
 dir <- "/Users/jackieeissman/Box Sync/Hohman_Lab/Students/Jaclyn Eissman/Sex_Diff_Final/"
 
-#read in raw files
+#Read in raw files
 autopsy <- fread(paste0(dir,"TABLES/data/ACT_ROSMAP_final_rs11225156.raw"))
 pet <- fread(paste0(dir,"TABLES/data/ADNI_A4_final_rs11225156.raw"))
 
-#read in covar/pheno files 
+#Read in covariate/phenotype files 
 covar <- fread(paste0(dir,"TABLES/data/All_datasets_MPlus_Resilience_Covariates_updated.txt"))
 pheno <- fread(paste0(dir,"TABLES/data/All_datasets_MPlus_Resilience_Phenotypes_updated.txt"))
 
-#combine
+#Combine
 covar_pheno <- merge(covar,pheno,by=c("FID","IID")) #5024
 autopsy <- merge(autopsy,covar_pheno,by=c("FID","IID")) #N=1402
 pet <- merge(pet,covar_pheno,by=c("FID","IID")) #N=3622
 
-#pull individual cohorts
+#Pull individual cohorts
 a4 <- pet[grepl("A4_",pet$FID),]
 act <- autopsy[grepl("ACT_",autopsy$FID),]
 adni <- pet[grepl("ADNI_",pet$FID),]
 rosmap <- autopsy[grepl("ROSMAP_",autopsy$FID),]
 
-#Run individual cohort lm
+#Run individual cohort linear models
 act <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs11225156_T*sex, data=act, na.action=na.omit)
 rosmap <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs11225156_T*sex, data=rosmap, na.action=na.omit)
 adni <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs11225156_T*sex, data=adni, na.action=na.omit)
 a4 <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs11225156_T*sex, data=a4, na.action=na.omit)
 
-#Run autopsy and pet lm 
+#Run autopsy and pet linear models 
 autopsy <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs11225156_T*sex, data=autopsy, na.action=na.omit)
 pet <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs11225156_T*sex, data=pet, na.action=na.omit)
 
@@ -74,4 +76,3 @@ forestplot(tabletext, mean=to_plot$Beta, is.summary=c(TRUE,rep(FALSE,2),TRUE,rep
            xticks = c(-0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),  
            ci.vertices.height=0.07, boxsize=0.1, title="rs11225156 by Sex: Residual Cognitive Resilience (CN)")
 dev.off()
-
