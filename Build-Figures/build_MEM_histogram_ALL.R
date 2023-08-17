@@ -1,12 +1,14 @@
-#packages
+#By Jaclyn Eissman, December 7, 2021
+
+#Load packages
 library(ggplot2)
 library(data.table)
 library(plyr)
 
-#Directory
+#Set directory
 dir <- "/Users/jackieeissman/Box Sync/Hohman_Lab/Students/Jaclyn Eissman/Sex_Diff_Final/"
 
-#read in mem data and organize
+#Read in memory data and organize
 autopsy_mem <- readRDS(paste0(dir,"TABLES/data/ACT_ROSMAP_Combined_Resilience_Phenotype_Covariates_newmem.rds"))
 autopsy_mem <- autopsy_mem[,c("ID","mem","SEX","Dataset","dx")]
 names(autopsy_mem) <- c("ID","MEM","SEX","Dataset","dx")
@@ -17,7 +19,7 @@ pet_mem <- pet_mem[,c("ID","mem","sex","Dataset","dx")]
 names(pet_mem) <- c("ID","MEM","SEX","Dataset","dx")
 pet_mem$SEX <- ifelse(pet_mem$SEX==1,"Male", ifelse(pet_mem$SEX==2,"Female",pet_mem$SEX))
 
-#read in final covar file and subset to people present in that
+#Read in final covariate file and subset to people present in that
 covar <- fread(paste0(dir,"TABLES/data/All_datasets_MPlus_Resilience_Covariates_updated.txt")) #5024
 covar$FID <- gsub("A4_","",covar$FID)
 covar$FID <- gsub("ACT_","",covar$FID)
@@ -80,4 +82,3 @@ ggplot(F_CN_MEM, aes(x=MEM, fill=Dataset, color=Dataset)) +
   scale_fill_manual(values = c("deeppink", "hotpink3", "hotpink", "deeppink4")) + 
   ggtitle("Harmonized Memory in Females (CN)")
 dev.off()
-
