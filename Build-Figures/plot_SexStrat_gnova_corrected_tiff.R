@@ -1,3 +1,4 @@
+###Plot all traits
 #By Jaclyn Eissman, December 7, 2021
 
 #Load packages
