@@ -1,4 +1,5 @@
 #!/bin/bash
+#By Jaclyn Eissman, December 7, 2021
 #SBATCH --mail-user=jaclyn.m.eissman@vanderbilt.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
@@ -10,6 +11,9 @@
 #SBATCH --job-name=gnova_all_traits_males_globalres
 #SBATCH --output=/data/h_vmac/eissmajm/Sex_Diff_Final/GNOVA/logfiles/males_globalres_%A_%a.out
 
+#Sets up job array to run on computing cluster
 trait_list=$(cat /data/h_vmac/eissmajm/SUMSTATS/trait_list.txt | awk -v line=$SLURM_ARRAY_TASK_ID '{if (NR == line) print $0}')
+
+#Run bash script for every line of trait_list
 sh /data/h_vmac/eissmajm/Sex_Diff_Final/GNOVA/scripts/gnova_males_globalres.sh $trait_list
 
