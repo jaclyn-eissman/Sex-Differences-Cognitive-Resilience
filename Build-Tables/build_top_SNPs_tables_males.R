@@ -1,3 +1,5 @@
+#By Jaclyn Eissman, December 7, 2021
+
 ###Load packages
 library(data.table)
 library(openxlsx)
