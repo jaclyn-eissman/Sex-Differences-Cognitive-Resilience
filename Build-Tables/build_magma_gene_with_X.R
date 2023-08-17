@@ -1,11 +1,13 @@
-###packages
+#By Jaclyn Eissman, December 7, 2021
+
+###Load packages
 library(data.table)
 library(openxlsx)
 
-###directory
+###Set directory
 dir <- "/Users/jackieeissman/Box Sync/Hohman_Lab/Students/Jaclyn Eissman/Sex_Diff_Final/"
 
-###read in text files and pull needed cols
+###Read in text files and pull needed cols
 Fcogres <- fread(paste0(dir,"MAGMA/COGRES.females_2sets.genes.out_with_FDR"))
 FcogresNC <- fread(paste0(dir,"MAGMA/COGRES_NC.females_2sets.genes.out_with_FDR"))
 Fglobalres <- fread(paste0(dir,"MAGMA/GLOBALRES.females_2sets.genes.out_with_FDR"))
@@ -26,7 +28,7 @@ McogresNC <- McogresNC[,c("CHR","GENE","ZSTAT","P")]
 Mglobalres <- Mglobalres[,c("CHR","GENE","ZSTAT","P")]
 MglobalresNC <- MglobalresNC[,c("CHR","GENE","ZSTAT","P")]
 
-###read in X and pull needed cols
+###Read in X and pull needed cols
 Fcogres_X <- fread(paste0(dir,"XCHROM/MAGMA/COGRES.females_2sets.X.genes.out"))
 FcogresNC_X <- fread(paste0(dir,"XCHROM/MAGMA/COGRES_NC.females_2sets.X.genes.out"))
 Fglobalres_X <- fread(paste0(dir,"XCHROM/MAGMA/GLOBALRES.females_2sets.X.genes.out"))
@@ -47,7 +49,7 @@ McogresNC_X <- McogresNC_X[,c("CHR","GENE","ZSTAT","P")]
 Mglobalres_X <- Mglobalres_X[,c("CHR","GENE","ZSTAT","P")]
 MglobalresNC_X <- MglobalresNC_X[,c("CHR","GENE","ZSTAT","P")]
 
-###combine autosome with X
+###Combine autosome with X
 Fcogres <- rbind(Fcogres,Fcogres_X)
 FcogresNC <- rbind(FcogresNC,FcogresNC_X)
 Fglobalres <- rbind(Fglobalres,Fglobalres_X)
@@ -58,7 +60,7 @@ McogresNC <- rbind(McogresNC,McogresNC_X)
 Mglobalres <- rbind(Mglobalres,Mglobalres_X)
 MglobalresNC <- rbind(MglobalresNC,MglobalresNC_X)
 
-###do FDR correction
+###Do FDR correction
 Fcogres$P.Fdr <- p.adjust(Fcogres$P, method="fdr")
 FcogresNC$P.Fdr <- p.adjust(FcogresNC$P, method="fdr")
 Fglobalres$P.Fdr <- p.adjust(Fglobalres$P, method="fdr")
@@ -69,7 +71,7 @@ McogresNC$P.Fdr <- p.adjust(McogresNC$P, method="fdr")
 Mglobalres$P.Fdr <- p.adjust(Mglobalres$P, method="fdr")
 MglobalresNC$P.Fdr <- p.adjust(MglobalresNC$P, method="fdr")
 
-###rename
+###Rename cols
 names(Fcogres) <- c("CHR","Gene","Z-stat(females)","P(females)","P.FDR(females)")
 names(FcogresNC) <- c("CHR","Gene","Z-stat(females)","P(females)","P.FDR(females)")
 names(Fglobalres) <- c("CHR","Gene","Z-stat(females)","P(females)","P.FDR(females)")
@@ -80,13 +82,13 @@ names(McogresNC) <- c("CHR","Gene","Z-stat(males)","P(males)","P.FDR(males)")
 names(Mglobalres) <- c("CHR","Gene","Z-stat(males)","P(males)","P.FDR(males)")
 names(MglobalresNC) <- c("CHR","Gene","Z-stat(males)","P(males)","P.FDR(males)")
 
-###combine
+###Combine
 cogres <- merge(Fcogres,Mcogres,by=c("CHR","Gene"))
 cogresNC <- merge(FcogresNC,McogresNC,by=c("CHR","Gene"))
 globalres <- merge(Fglobalres,Mglobalres,by=c("CHR","Gene"))
 globalresNC <- merge(FglobalresNC,MglobalresNC,by=c("CHR","Gene"))
 
-###order by P value
+###Order by P-value
 cogres <- cogres[order(cogres$`P.FDR(males)`,decreasing=FALSE),]
 cogresNC <- cogresNC[order(cogresNC$`P.FDR(males)`,decreasing=FALSE),]
 globalres <- globalres[order(globalres$`P.FDR(males)`,decreasing=FALSE),]
