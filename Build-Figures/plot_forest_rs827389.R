@@ -1,31 +1,33 @@
-#packages
+#By Jaclyn Eissman, December 7, 2021
+
+#Packages
 library(data.table)
 library(metafor)
 library(forestplot)
 
-#directory
+#Set directory
 dir <- "/Users/jackieeissman/Box Sync/Hohman_Lab/Students/Jaclyn Eissman/Sex_Diff_Final/"
 
-#read in raw files
+#Read in raw files
 autopsy <- fread(paste0(dir,"DATA/ACT_ROSMAP_final_rs827389.raw"))
 pet <- fread(paste0(dir,"DATA/ADNI_A4_final_rs827389.raw"))
 
-#read in covar/pheno files 
+#Read in covariate/phenotype files 
 covar <- fread(paste0(dir,"DATA/All_datasets_MPlus_Resilience_Covariates_updated.txt"))
 pheno <- fread(paste0(dir,"DATA/All_datasets_MPlus_Resilience_Phenotypes_updated.txt"))
 
-#combine
+#Combine
 covar_pheno <- merge(covar,pheno,by=c("FID","IID")) #5024
 autopsy <- merge(autopsy,covar_pheno,by=c("FID","IID")) #N=1402
 pet <- merge(pet,covar_pheno,by=c("FID","IID")) #N=3622
 
-#pull individual cohorts
+#Pull individual cohorts
 a4 <- pet[grepl("A4_",pet$FID),]
 act <- autopsy[grepl("ACT_",autopsy$FID),]
 adni <- pet[grepl("ADNI_",pet$FID),]
 rosmap <- autopsy[grepl("ROSMAP_",autopsy$FID),]
 
-#Run individual cohort lm
+#Run individual cohort linear models
 act_females <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=act[act$sex==2,], na.action=na.omit)
 rosmap_females <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=rosmap[rosmap$sex==2,], na.action=na.omit)
 adni_females <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=adni[adni$sex==2,], na.action=na.omit)
@@ -36,7 +38,7 @@ rosmap_males <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=rosma
 adni_males <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=adni[adni$sex==1,], na.action=na.omit)
 a4_males <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=a4[a4$sex==1,], na.action=na.omit)
 
-#Run autopsy and pet lm 
+#Run autopsy and pet linear models
 autopsy_females <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=autopsy[autopsy$sex==2,], na.action=na.omit)
 pet_females <- lm(GLOBALRES_NC ~ age + PC1 + PC2 + PC3 + rs827389_A, data=pet[pet$sex==2,], na.action=na.omit)
 
@@ -115,4 +117,3 @@ forestplot(tabletext, mean=cbind(to_plot_females$Beta,to_plot_males$Beta),
            ci.vertices.height=0.07, boxsize=0.1, legend=c("Females", "Males"), 
            title="rs827389 on Combined Resilience (Cognitively Normal)")
 dev.off()
-
