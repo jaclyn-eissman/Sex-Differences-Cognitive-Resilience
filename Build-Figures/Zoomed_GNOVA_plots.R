@@ -1,13 +1,14 @@
-###GNOVA plots for paper
+#By Jaclyn Eissman, December 7, 2021
+###Genetic correlation plots for paper
 
-#packages
+#Load ackages
 library(data.table)
 library(ggplot2)
 
-#directory
+#Set directory
 dir <- "/Users/jackieeissman/Box Sync/Hohman_Lab/Students/Jaclyn Eissman/Sex_Diff_Final/"
 
-#create function
+#Create function
 prepare_files <- function(file,sex) {
   temp <- read.table(file)
   temp <- temp[,c("V17","V3","V4","V6")]
@@ -23,7 +24,7 @@ prepare_files <- function(file,sex) {
   temp
 }
 
-#run function on all files
+#Run function on all files
 F_cogres <- prepare_files(paste0(dir,"GNOVA/females/females.cogres.combined.txt"),"F")
 M_cogres <- prepare_files(paste0(dir,"GNOVA/males/males.cogres.combined.txt"),"M")
 cogres <- rbind(F_cogres,M_cogres)
@@ -32,7 +33,7 @@ F_globalres <- prepare_files(paste0(dir,"GNOVA/females/females.globalres.combine
 M_globalres <- prepare_files(paste0(dir,"GNOVA/males/males.globalres.combined.txt"),"M")
 globalres <- rbind(F_globalres,M_globalres)
 
-#rename traits
+#Rename traits
 cogres$trait[cogres$trait=="AlzheimersDisease"] <- "Alzheimer's Disease"
 cogres$trait[cogres$trait=="FTD"] <- "Frontotemporal Dementia"
 
@@ -43,7 +44,7 @@ globalres$trait[globalres$trait=="RestingHrSDNN"] <- "Heart-Rate Variability: SD
 globalres$trait[globalres$trait=="RestingHrRMSSD"] <- "Heart-Rate Variability: RMSSD"
 globalres$trait[globalres$trait=="RestingHRpvRSAHF"] <- "Heart-Rate Variability: pvRSAHF"
 
-#create sex by p-value groups
+#Create sex by p-value groups
 cogres$Group <- factor(paste(cogres$sex,cogres$p_group,sep="_"))
 cogres_subset <- cogres[cogres$trait=="Alzheimer's Disease"| cogres$trait=="Frontotemporal Dementia",]
 
@@ -52,7 +53,7 @@ globalres_subset <- globalres[globalres$trait== "Heart-Rate Variability: SDNN" |
                                  globalres$trait=="Heart-Rate Variability: pvRSAHF" | globalres$trait=="Autoimmune: Multiple Sclerosis" | 
                                 globalres$trait=="Autoimmune: Celiac Disease" | globalres$trait=="Autoimmune: Lupus",]
 
-#plot
+#Plot
 tiff(paste0(dir,"FIGURES/output/Main_cogres_GNOVA.tiff"),width=10,height=2.5,units="in",res=1000)
 ggplot(cogres_subset, aes(x=rho_corrected, y=trait, colour=Group)) + 
   ggtitle("Residual Cognitive Resilience") +
@@ -88,5 +89,3 @@ ggplot(globalres_subset, aes(x=rho_corrected, y=trait, colour=Group)) +
   theme(axis.text.y=element_text(colour="black",size=12)) + theme(axis.title.y=element_text(colour="black",size=14,face="bold")) +
   theme(axis.title.x=element_text(colour="black",size=14,face="bold")) 
 dev.off()
-
-
