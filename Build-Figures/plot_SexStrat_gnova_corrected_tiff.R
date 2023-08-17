@@ -1,11 +1,13 @@
-#packages
+#By Jaclyn Eissman, December 7, 2021
+
+#Load packages
 library(data.table)
 library(ggplot2)
 
-#directory
+#Set directory
 dir <- "/Users/jackieeissman/Box Sync/Hohman_Lab/Students/Jaclyn Eissman/Sex_Diff_Final/"
 
-#create function
+#Create function
 prepare_files <- function(file,sex) {
   temp <- read.table(file)
   temp <- temp[,c("V17","V3","V4","V6")]
@@ -21,7 +23,7 @@ prepare_files <- function(file,sex) {
   temp
 }
 
-#run function on all files
+#Run function on all files
 F_cogres <- prepare_files(paste0(dir,"GNOVA/females/females.cogres.combined.txt"),"F")
 F_cogresNC <- prepare_files(paste0(dir,"GNOVA/females/females.cogresNC.combined.txt"),"F")
 F_globalres <- prepare_files(paste0(dir,"GNOVA/females/females.globalres.combined.txt"),"F")
@@ -32,25 +34,25 @@ M_cogresNC <- prepare_files(paste0(dir,"GNOVA/males/males.cogresNC.combined.txt"
 M_globalres <- prepare_files(paste0(dir,"GNOVA/males/males.globalres.combined.txt"),"M")
 M_globalresNC <- prepare_files(paste0(dir,"GNOVA/males/males.globalresNC.combined.txt"),"M")
 
-#combine males and females into 1 dataframe
+#Combine males and females into 1 dataframe
 cogres <- rbind(F_cogres,M_cogres)
 cogresNC <- rbind(F_cogresNC,M_cogresNC)
 globalres <- rbind(F_globalres,M_globalres)
 globalresNC <- rbind(F_globalresNC,M_globalresNC)
 
-#create sex by p-value groups
+#Create sex by p-value groups
 cogres$Group <- factor(paste(cogres$sex,cogres$p_group,sep="_"))
 cogresNC$Group <- factor(paste(cogresNC$sex,cogresNC$p_group,sep="_"))
 globalres$Group <- factor(paste(globalres$sex,globalres$p_group,sep="_"))
 globalresNC$Group <- factor(paste(globalresNC$sex,globalresNC$p_group,sep="_"))
 
-#set y-axis 
+#Set y-axis 
 cogres$trait_level <- factor(cogres$trait, levels=M_cogres$trait[order(M_cogres$rho_corrected)])
 cogresNC$trait_level <- factor(cogresNC$trait, levels=M_cogresNC$trait[order(M_cogresNC$rho_corrected)])
 globalres$trait_level <- factor(globalres$trait, levels=M_globalres$trait[order(M_globalres$rho_corrected)])
 globalresNC$trait_level <- factor(globalresNC$trait, levels=M_globalresNC$trait[order(M_globalresNC$rho_corrected)])
 
-#plot
+#Plot
 tiff(paste0(dir,"FIGURES/output/SexStrat.COGRES_corrected.tiff"),width=9.5,height=7,units="in",res=1000)
 ggplot(cogres, aes(x=rho_corrected, y=trait_level, colour=Group)) + 
   ggtitle("Genetic Correlation with Residual Cognitive Resilience") +
@@ -102,4 +104,3 @@ ggplot(globalresNC, aes(x=rho_corrected, y=trait_level, colour=Group)) +
                       labels=c("Females: P>0.05","Females: P<0.05","Females: P.FDR<0.05","Males: P>0.05","Males: P<0.05","Males: P.FDR<0.05"), 
                       values = c("grey","maroon1","maroon4","grey","dodgerblue1","dodgerblue4"))
 dev.off()
-
